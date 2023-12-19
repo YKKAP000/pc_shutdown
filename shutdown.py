@@ -2,46 +2,49 @@ import os
 import subprocess
 from PyQt5.QtWidgets import QApplication, QMessageBox
 from PyQt5.QtGui import QFont
+from PyQt5.QtCore import Qt
+
 
 class CustomDialog(QMessageBox):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("お疲れ様でした")
-        self.setText("終業ボタンは押し忘れてませんか?")
-        self.setInformativeText("No を押すとシャットダウンを\n中止してTeamsを開きます")
+        self.setText("終業時作業を忘れていませんか？")
+        self.setInformativeText("Yes : シャットダウン実行\nNo  : シャットダウン中止. Teams を起動 ")
         self.setIcon(QMessageBox.Question)
 
         # スタイルシートを適用
         self.setStyleSheet("""
             QMessageBox {
-                background-color: #F0F0F0;  /* グレー基調の背景色 */
-                color: #333333;  /* テキストカラー */
-                border: 2px solid #B0B0B0;  /* ボーダーカラー */
+                background-color: #333333;  /* Dark background color */
+                color: #FFFFFF;  /* White text color */
+                border: 2px solid #555555;  /* Dark border color */
                 border-radius: 10px;
             }
             QLabel {
-                color: #333333;  /* テキストカラー */
+                color: #FFFFFF;  /* White text color */
                 padding: 10px;
                 margin: 0;
                 font-size: 12pt;
-                text-align: center;  /* メッセージを中央寄せ */
+                text-align: center;  /* Center-align the message */
             }
             QPushButton {
-                background-color: #6C7A89;  /* ボタンの背景色 */
-                color: white;  /* ボタンのテキストカラー */
+                background-color: #546E7A;  /* Dark button background color */
+                color: white;  /* White button text color */
                 padding: 10px;
-                border: 2px solid #B0B0B0;  /* ボーダーカラー */
+                border: 2px solid #555555;  /* Dark border color */
                 border-radius: 6px;
-                min-width: 100px;  /* ボタンの最小幅 */
+                min-width: 100px;  /* Minimum button width */
             }
             QPushButton:hover {
-                background-color: #95A5A6;  /* ホバー時の背景色 */
+                background-color: #78909C;  /* Hover state background color */
+                font-size: 10pt;
             }
         """)
 
         # フォントを変更
         font = QFont()
-        font.setFamily("Arial")
+        font.setFamily("Meiryo")
         font.setPointSize(9)
         self.setFont(font)
 
@@ -54,9 +57,12 @@ class CustomDialog(QMessageBox):
 
         # ボタンが存在する場合にスタイルシートを設定
         if yes_button is not None:
-            yes_button.setStyleSheet("margin-right:30px;")  # 右マージン
+            yes_button.setStyleSheet("margin-right: 80px; margin-left: 15px;")  # 左マージンを15pxに変更
+            yes_button.setFont(QFont("Meiryo", 10))  # フォントサイズを12ptに変更
+
         if no_button is not None:
-            no_button.setStyleSheet("margin-left:30px;")  # 左マージン
+            no_button.setStyleSheet("margin-left: 0; margin-right: 15px;")  # 右マージンを15pxに変更
+            no_button.setFont(QFont("Meiryo", 10))  # フォントサイズを12ptに変更
 
 def shutdown_pc():
     subprocess.run(["C:\Windows\system32\shutdown.exe", "/s", "/f", "/t", "2"])
