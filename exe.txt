@@ -1,0 +1,1 @@
+pyinstaller shutdown.py –onefile --noconsole
